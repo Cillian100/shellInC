@@ -1,55 +1,34 @@
-#include <stdio.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <stdlib.h>
-#define LSH_RL_BUFSIZE 1024
+#include <stdio.h>
+#include <string.h>
 
-char *lsh_read_line();
 
-void lsh_loop(void){
-  char *line;
-  char **args;
-  int status;
+//https://www.educative.io/answers/resolving-the-function-returns-address-of-local-variable-error
+
+void parseUserInput(){
   
-  do{
-    printf("> ");
-    line = lsh_read_line();
-  }while(status);
 }
 
-char *lsh_read_line(){
-  int bufsize = LSH_RL_BUFSIZE;
-  int position = 0;
-  char *buffer = malloc(sizeof(char)*bufsize);
-  int c;
+char *userInput(){
+  char buffer[50];
+ 
+  printf("Enter a string: ");
 
-  if(!buffer){
-    fprintf(stderr, "lsh: allocation error\n");
-    exit(EXIT_FAILURE);
+  if(!(fgets(buffer, sizeof(buffer), stdin)!=NULL)){
+    printf("Error reading input\n");
   }
 
-  while(1){
-    c = getchar();
-
-    if(c == EOF || c == '\n'){
-      buffer[position] = '\0';
-      return buffer;
-    }else{
-      buffer[position] = c;
-    }
-    position++;
-  }
-  
-  if(position >= bufsize){
-    bufsize += LSH_RL_BUFSIZE;
-    buffer = realloc(buffer, bufsize);
-    if(!buffer){
-      fprintf(stderr, "lsh: allocation error\n");
-      exit(EXIT_FAILURE);
-    }
-  }
+  return buffer;
 }
 
+void infiniteLoop(){
+  printf("> ");
+  userInput();
+  infiniteLoop();
+}
 
 int main(int argc, char **argv){
-  lsh_loop();
-  return EXIT_SUCCESS;
+  infiniteLoop();
 }
