@@ -3,29 +3,37 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+char buffer[50];
+char toks[50][50];
 
+char **parseUserInput(char *poop){
+  char** row=malloc(50*sizeof(char*));
+  char *token;
+  int counter=1;
+  token = strtok(poop, ";");
+  row[0]=token;
+  while(token!=NULL){
+    token = strtok(NULL, ";");
+    if(token!=NULL){
+      row[counter]=token;
+    }
+    counter++;
+  }
 
-//https://www.educative.io/answers/resolving-the-function-returns-address-of-local-variable-error
-
-void parseUserInput(){
-  
+  return row;
 }
 
 char *userInput(){
-  char buffer[50];
- 
-  printf("Enter a string: ");
-
   if(!(fgets(buffer, sizeof(buffer), stdin)!=NULL)){
     printf("Error reading input\n");
   }
-
   return buffer;
 }
 
 void infiniteLoop(){
   printf("> ");
-  userInput();
+  char *poop=userInput();
+  char **poopTwo=parseUserInput(poop);
   infiniteLoop();
 }
 
